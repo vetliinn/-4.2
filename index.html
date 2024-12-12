@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Практична №4.2</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .task-wrapper {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .task {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .delete-button {
+        display: none;
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      .task:hover .delete-button {
+        display: inline-block;
+      }
+
+      .task-complete {
+        text-decoration-line: line-through;
+      }
+
+      .task-input {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="task-wrapper">
+    </ul>
+
+    <div class="task-input">
+      <input type="text" class="new-task-text" placeholder="Enter new task" />
+      <button class="add-task">Add Task</button>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".add-task").on("click", function () {
+          const taskText = $(".new-task-text").val();
+          if (taskText.trim() === "") return;
+
+          const taskHtml = `
+                    <li class="task">
+                        <input type="checkbox" class="task-checkbox" />
+                        <span class="task-text">${taskText}</span>
+                        <button class="delete-button">Delete Task</button>
+                    </li>
+                `;
+
+          $(".task-wrapper").append(taskHtml);
+          $(".new-task-text").val("");
+        });
+
+        $(document).on("mouseenter", ".task", function () {
+          $(this).find(".delete-button").show();
+        });
+
+        $(document).on("mouseleave", ".task", function () {
+          $(this).find(".delete-button").hide();
+        });
+
+        $(document).on("click", ".task-checkbox", function () {
+          const taskText = $(this).siblings(".task-text");
+          taskText.toggleClass("task-complete");
+        });
+
+        $(document).on("click", ".delete-button", function () {
+          $(this).closest(".task").remove();
+        });
+      });
+    </script>
+  </body>
+</html>
